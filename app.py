@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request, send_file, send_from_directory
 from googleapiclient.discovery import build
 import pandas as pd
@@ -6,7 +7,7 @@ from io import BytesIO
 app = Flask(__name__, static_folder='web')
 
 # YouTube API 키 설정
-API_KEY = 'AIzaSyDUR1ocgtIjGZpQcG7JRT_MG5BiTP8ZIKM'
+API_KEY = os.getenv('API_KEY')  # Render 환경 변수에서 API_KEY 가져오기
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 @app.route('/')
@@ -170,4 +171,6 @@ def download_excel():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Render가 제공하는 PORT 환경 변수 사용
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
