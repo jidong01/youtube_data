@@ -80751,7 +80751,7 @@ A.AH.prototype={
 xc(){var s=0,r=A.V(t.H),q=this,p,o,n,m
 var $async$xc=A.W(function(a,b){if(a===1)return A.S(b,r)
 while(true)switch(s){case 0:q.al(new A.acC(q))
-p=A.f9("http://127.0.0.1:5000/fetch-data")
+p=A.f9("https://youtube-data-0uvv.onrender.com/fetch-data")
 o=t.N
 n=A.at(["Content-Type","application/json"],o,o)
 s=2
@@ -80765,7 +80765,7 @@ return A.U($async$xc,r)},
 xb(a){return this.adI(a)},
 adI(a){var s=0,r=A.V(t.H),q=this,p,o,n,m
 var $async$xb=A.W(function(b,c){if(b===1)return A.S(c,r)
-while(true)switch(s){case 0:p=A.f9("http://127.0.0.1:5000/fetch-comments")
+while(true)switch(s){case 0:p=A.f9("https://youtube-data-0uvv.onrender.com/fetch-comments")
 o=t.N
 n=A.at(["Content-Type","application/json"],o,o)
 s=2
@@ -80777,7 +80777,7 @@ return A.T(null,r)}})
 return A.U($async$xb,r)},
 x0(){var s=0,r=A.V(t.H),q=this,p,o,n,m,l
 var $async$x0=A.W(function(a,b){if(a===1)return A.S(b,r)
-while(true)switch(s){case 0:o=A.f9("http://127.0.0.1:5000/download-excel")
+while(true)switch(s){case 0:o=A.f9("https://youtube-data-0uvv.onrender.com/download-excel")
 n=t.N
 m=A.at(["Content-Type","application/json"],n,n)
 s=2
