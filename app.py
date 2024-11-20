@@ -10,23 +10,6 @@ app = Flask(__name__, static_folder='web')
 API_KEY = os.getenv('API_KEY')  # Render 환경 변수에서 API_KEY 가져오기
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
-def get_channel_id_from_url(url):
-    """YouTube 채널 URL에서 채널 ID 추출"""
-    if "youtube.com/channel/" in url:
-        # 채널 ID URL
-        return url.split("youtube.com/channel/")[1].split("/")[0]
-    elif "youtube.com/c/" in url or "youtube.com/user/" in url:
-        # 커스텀 URL 또는 사용자 URL -> API를 사용해 채널 ID 추출
-        response = youtube.search().list(
-            q=url.split("/")[-1],
-            part="id",
-            type="channel",
-            maxResults=1
-        ).execute()
-        return response["items"][0]["id"]["channelId"]
-    else:
-        raise ValueError("Invalid YouTube channel URL format")
-
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -39,17 +22,14 @@ def serve_file(path):
 def fetch_data():
     """채널의 동영상 데이터 가져오기"""
     data = request.json
-    channel_url = data.get('channelUrl')
+    channel_id = data.get('channelId')
     start_date = data.get('startDate')
     end_date = data.get('endDate')
 
-    if not channel_url or not start_date or not end_date:
+    if not channel_id or not start_date or not end_date:
         return jsonify({"error": "Missing required parameters"}), 400
 
     try:
-        # 채널 ID 추출
-        channel_id = get_channel_id_from_url(channel_url)
-        
         all_videos = []
         next_page_token = None
 

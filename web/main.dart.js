@@ -81843,12 +81843,12 @@ n.f.zO(A.a7Q(null,null,null,null,null,B.a9,null,A.eE("Failed to download Excel: 
 return A.T(null,r)}})
 return A.U($async$xk,r)},
 N(a){var s,r,q=this,p=null,o=A.EK(12),n=A.al6(q.d,B.DO),m=A.al6(q.e,B.DN),l=A.al6(q.f,B.DP),k=q.r,j=k?p:q.gaex()
-j=A.ZV(A.aok(k?B.lN:B.Ra,j,p))
+j=A.ZV(A.aok(k?B.lN:B.Rb,j,p))
 k=J.fU(q.x)||q.w?p:q.gae_()
 s=A.ayz(p,p,B.HK,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p)
 r=t.F
 o=A.anu(new A.cS(B.ms,A.X8(A.b([n,B.ya,m,B.ya,l,B.yb,A.a61(A.b([j,B.M3,A.ZV(A.aok(q.w?B.lN:B.R9,k,s))],r),B.bZ,B.c8,B.d2)],r),B.bZ,B.c8,B.d2),p),5,new A.cc(o,B.t))
-return new A.yf(new A.ul(B.Rb,new A.Qn(p,p,1/0,56),p),new A.cS(B.ms,A.X8(A.b([o,B.yb,A.ZV(J.fU(q.x)?B.AO:A.ap6(new A.ad7(q),J.cg(q.x)))],r),B.bZ,B.c8,B.d2),p),p)}}
+return new A.yf(new A.ul(B.Ra,new A.Qn(p,p,1/0,56),p),new A.cS(B.ms,A.X8(A.b([o,B.yb,A.ZV(J.fU(q.x)?B.AO:A.ap6(new A.ad7(q),J.cg(q.x)))],r),B.bZ,B.c8,B.d2),p),p)}}
 A.adc.prototype={
 $0(){this.a.r=!0},
 $S:0}
@@ -86828,9 +86828,9 @@ B.PC=new A.m(!0,B.p,null,"Roboto",B.O,null,null,null,null,null,null,null,null,nu
 B.PN=new A.m(!0,B.p,null,"Roboto",B.O,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackHelsinki labelSmall",null,null,null,null)
 B.R7=new A.db(B.QA,B.NH,B.OG,B.PB,B.PP,B.N7,B.Of,B.Nb,B.Pl,B.Q1,B.OR,B.Q3,B.Qe,B.PC,B.PN)
 B.R9=new A.ki("\uc5d1\uc140 \ub2e4\uc6b4\ub85c\ub4dc",null,null,null,null,null,null,null,null)
-B.Ra=new A.ki("\ub370\uc774\ud130 \uac00\uc838\uc624\uae30",null,null,null,null,null,null,null,null)
 B.OJ=new A.m(!0,B.jH,null,null,null,null,null,B.cY,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Rb=new A.ki("YouTube \ub370\uc774\ud130 \ucd94\ucd9c\uae30 by W!TH",null,B.OJ,null,null,null,null,null,null)
+B.Ra=new A.ki("YouTube \ub370\uc774\ud130 \ucd94\ucd9c\uae30",null,B.OJ,null,null,null,null,null,null)
+B.Rb=new A.ki("\ub370\uc774\ud130 \uac00\uc838\uc624\uae30",null,null,null,null,null,null,null,null)
 B.UA=new A.a9k(0,"system")
 B.Iz=new A.h(0.05,0)
 B.IA=new A.h(0.133333,0.06)
