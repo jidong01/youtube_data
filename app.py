@@ -10,6 +10,23 @@ app = Flask(__name__, static_folder='web')
 API_KEY = os.getenv('API_KEY')  # Render 환경 변수에서 API_KEY 가져오기
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
+def get_channel_id_from_url(url):
+    """YouTube 채널 URL에서 채널 ID 추출"""
+    if "youtube.com/channel/" in url:
+        # 채널 ID URL
+        return url.split("youtube.com/channel/")[1].split("/")[0]
+    elif "youtube.com/c/" in url or "youtube.com/user/" in url:
+        # 커스텀 URL 또는 사용자 URL -> API를 사용해 채널 ID 추출
+        response = youtube.search().list(
+            q=url.split("/")[-1],
+            part="id",
+            type="channel",
+            maxResults=1
+        ).execute()
+        return response["items"][0]["id"]["channelId"]
+    else:
+        raise ValueError("Invalid YouTube channel URL format")
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -22,14 +39,17 @@ def serve_file(path):
 def fetch_data():
     """채널의 동영상 데이터 가져오기"""
     data = request.json
-    channel_id = data.get('channelId')
+    channel_url = data.get('channelUrl')
     start_date = data.get('startDate')
     end_date = data.get('endDate')
 
-    if not channel_id or not start_date or not end_date:
+    if not channel_url or not start_date or not end_date:
         return jsonify({"error": "Missing required parameters"}), 400
 
     try:
+        # 채널 ID 추출
+        channel_id = get_channel_id_from_url(channel_url)
+        
         all_videos = []
         next_page_token = None
 
@@ -75,7 +95,6 @@ def fetch_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @app.route('/fetch-comments', methods=['POST'])
 def fetch_comments():
     """특정 동영상의 댓글 가져오기"""
@@ -116,7 +135,6 @@ def fetch_comments():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @app.route('/download-excel', methods=['POST'])
 def download_excel():
     """동영상 및 댓글 데이터를 Excel로 다운로드"""
@@ -125,31 +143,34 @@ def download_excel():
 
     all_comments = []
 
-    # 모든 동영상의 댓글 가져오기
     for video in videos:
         video_id = video['videoId']
         next_page_token = None
 
         while True:
-            response = youtube.commentThreads().list(
-                part='snippet',
-                videoId=video_id,
-                maxResults=50,
-                pageToken=next_page_token
-            ).execute()
+            try:
+                response = youtube.commentThreads().list(
+                    part='snippet',
+                    videoId=video_id,
+                    maxResults=50,
+                    pageToken=next_page_token
+                ).execute()
 
-            for item in response['items']:
-                top_comment = item['snippet']['topLevelComment']['snippet']
-                all_comments.append({
-                    "videoId": video_id,
-                    "videoTitle": video['title'],
-                    "author": top_comment['authorDisplayName'],
-                    "comment": top_comment['textDisplay'],
-                    "publishedAt": top_comment['publishedAt']
-                })
+                for item in response['items']:
+                    top_comment = item['snippet']['topLevelComment']['snippet']
+                    all_comments.append({
+                        "videoId": video_id,
+                        "videoTitle": video['title'],
+                        "author": top_comment['authorDisplayName'],
+                        "comment": top_comment['textDisplay'],
+                        "publishedAt": top_comment['publishedAt']
+                    })
 
-            next_page_token = response.get('nextPageToken')
-            if not next_page_token:
+                next_page_token = response.get('nextPageToken')
+                if not next_page_token:
+                    break
+            except Exception:
+                print(f"Comments disabled for videoId: {video_id}")
                 break
 
     # 데이터프레임 생성
@@ -171,6 +192,6 @@ def download_excel():
     )
 
 if __name__ == '__main__':
-    # Render가 제공하는 PORT 환경 변수 사용
+    # Render에서 제공하는 PORT 환경 변수 사용
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
